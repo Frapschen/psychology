@@ -5,11 +5,12 @@ a web project
 
 ### 场景
 1. 成功登录的角色查看文章列表，如果有多个，以10个文章为分页。
-2. 成功登录的点击文章列表中的某一个文章，进入文章正文，同时可以看到最多10条属于该文章的评论且按最新时间倒序排列，
-用户可以在第一条评论前添加再一条评论。
-3. 成功登录的角色查看文章列表且可以删除选中的文章。
-4. 成功登录的角色查看文章列表且可以添加一篇新的文章。
-5. 成功登录的角色查看文章列表且可以修改选择的文章。
+2. 成功登录的点击文章列表中的某一个文章，进入文章正文，同时可以看到最多10条属于该文章的评论且按最新时间倒序排列。
+3. 成功登录的角色可以文章正文下方添加一条评论。
+4. 成功登录的角色查看文章列表且可以删除选中的文章。
+5. 成功登录的角色查看文章列表且可以添加一篇新的文章。
+6. 成功登录的角色查看文章列表且可以修改选择的文章。
+7. 成功登录的角色查看文章正文且可以删除一条评论。
 
 ### 参与角色
 管理员，用户
@@ -50,6 +51,7 @@ colums:
 id,int,主键
 username,varchar(100),用户名
 password,varchar(100),密码
+image,blob,图片
 role,int,角色，1为管理源，0为普通用户
 ```
 
@@ -61,12 +63,12 @@ role,int,角色，1为管理源，0为普通用户
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for article
@@ -74,12 +76,12 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE `article` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `introduce` varchar(255) DEFAULT NULL,
-  `context` mediumblob,
+  `content` mediumblob,
   `created_time` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for conmment
@@ -87,7 +89,7 @@ CREATE TABLE `article` (
 DROP TABLE IF EXISTS `conmment`;
 CREATE TABLE `conmment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `contxt` blob,
+  `content` blob,
   `user_id` int(11) NOT NULL,
   `article_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -95,13 +97,13 @@ CREATE TABLE `conmment` (
   KEY `user_pk` (`user_id`),
   CONSTRAINT `article_pk` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_pk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
 ### api接口
 
-#### 显示所有文章
-* url：http://ip:8089/psychology/v1/article/list
+#### 1.显示所有文章
+* url：http://localhost:8089/psychology/v1/article/list
 * 方法：get
 * 权限：无
 * query参数：
@@ -119,19 +121,62 @@ size,int,大小,默认为10
 }
 ```
 
-#### 查询指定id的文章
-* url：http://ip:8089/psychology/v1/article/{id}
+#### 2.查询指定id的文章
+* url：http://localhost:8089/psychology/v1/article/{id}
 * 方法：get
 * 权限：管理员，用户
 * 返回参数：
-```json5
+```json
 {
-  "article": {}, //一个文章的实体
+  "article": {}, //一个article实体
   "conmment": {
     "conmments": [{},{}],  //一些conmment实体
-    page: 1,
-    size: 10,
-    total: 100
+    "page": 1,
+    "size": 10,
+    "total": 100
   }
+}
+```
+### 3.评论指定的文章
+* url：http://localhost:8089/psychology/v1/comment/{article-id}
+* 方法：put
+* 权限：管理员，用户
+* requestbody：
+```json
+{} //一个comment 实体
+```
+* 返回参数：
+```json
+{
+  "code": 200,
+  "message": "sucess"
+}
+```
+
+### 4.删除选中文章
+* url：http://localhost:8089/psychology/v1/article/{id}
+* 方法：delete
+* 权限：管理员
+* 返回参数：
+```json
+{
+  "code": 200,
+  "message": "sucess"
+}
+```
+
+### 5. 添加一篇文章
+* url http://localhost:8089/psychology/v1/article
+* 方法：put
+* 权限：管理员
+* requestbody
+```json
+{} //一个文章的实体
+```
+* 返回参数：
+```json
+{
+  "code": 200,
+  "message": "sucess"
 }
 ```

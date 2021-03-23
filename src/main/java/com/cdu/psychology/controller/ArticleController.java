@@ -1,17 +1,16 @@
 package com.cdu.psychology.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.cdu.psychology.entity.Article;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/v1/article")
 public class ArticleController {
 
-    @GetMapping("/v1/article/list")
+    @GetMapping("/list")
     public Map<String, Object> getArticlesList(@RequestParam(defaultValue = "1", required = false) String page,
                                                     @RequestParam(defaultValue = "10", required = false) String size){
         Map<String, Object> data = new HashMap<>();
@@ -19,10 +18,24 @@ public class ArticleController {
         return data;
     }
 
-    @GetMapping("/v1/article/{id}")
-    public Map<String,Object> geArticleById(@PathVariable int id){
+    @GetMapping("/{id}")
+    public Map<String,Object> geArticleById(@PathVariable(required = true) int id){
         Map<String, Object> data = new HashMap<>();
         data.put("message","hello,article id = "+id);
+        return data;
+    }
+
+    @DeleteMapping("/{id}")
+    public Map<String,Object> deleteArticleById(@PathVariable(required = true) int id){
+        Map<String, Object> data = new HashMap<>();
+        data.put("message","sucess,deleteArticleById = "+id);
+        data.put("code",200);
+        return data;
+    }
+    @PutMapping()
+    public Map<String,Object> putArticle(@RequestBody Article article){
+        Map<String, Object> data = new HashMap<>();
+        data.put("recipt",article);
         return data;
     }
 }
