@@ -101,7 +101,7 @@ CREATE TABLE `conmment` (
 ### api接口
 
 #### 显示所有文章
-* url：http://ip:8089/psychology/article/list
+* url：http://ip:8089/psychology/v1/article/list
 * 方法：get
 * 权限：无
 * query参数：
@@ -120,7 +120,7 @@ size,int,大小,默认为10
 ```
 
 #### 查询指定id的文章
-* url：http://ip:8089/psychology/article/{id}
+* url：http://ip:8089/psychology/v1/article/{id}
 * 方法：get
 * 权限：管理员，用户
 * 返回参数：
