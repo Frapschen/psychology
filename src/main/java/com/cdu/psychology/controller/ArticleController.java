@@ -11,8 +11,8 @@ import java.util.Map;
 public class ArticleController {
 
     @GetMapping("/list")
-    public Map<String, Object> getArticlesList(@RequestParam(defaultValue = "1", required = false) String page,
-                                                    @RequestParam(defaultValue = "10", required = false) String size){
+    public Map<String, Object> getArticlesList(@RequestParam(defaultValue = "0", required = false) int page,
+                                                    @RequestParam(defaultValue = "10", required = false) int size){
         Map<String, Object> data = new HashMap<>();
         data.put("message","hello");
         return data;
@@ -35,7 +35,14 @@ public class ArticleController {
     @PutMapping()
     public Map<String,Object> putArticle(@RequestBody Article article){
         Map<String, Object> data = new HashMap<>();
-        data.put("recipt",article);
+        data.put("receipt",article);
         return data;
     }
+    @PostMapping()
+    public Map<String,Object> postArticle(@RequestBody Article article){
+        Map<String, Object> data = new HashMap<>();
+        data.put("receipt",article);
+        return data;
+    }
+
 }
