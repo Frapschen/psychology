@@ -4,13 +4,19 @@ a web project
 ## 文章模块
 
 ### 场景
-1. 成功登录的角色查看文章列表，如果有多个，以10个文章为分页。
-2. 成功登录的点击文章列表中的某一个文章，进入文章正文，同时可以看到最多10条属于该文章的评论且按最新时间倒序排列。
-3. 成功登录的角色可以文章正文下方添加一条评论。
-4. 成功登录的角色查看文章列表且可以删除选中的文章。
-5. 成功登录的角色查看文章列表且可以添加一篇新的文章。
-6. 成功登录的角色查看文章列表且可以修改选择的文章。
-7. 成功登录的角色查看文章正文且可以删除一条评论。
+#### 1.成功登录的角色查看文章列表，如果有多个，以10个文章为分页。
+
+#### 2.成功登录的点击文章列表中的某一个文章，进入文章正文，同时可以看到最多10条属于该文章的评论且按最新时间倒序排列。
+
+#### 3.成功登录的角色可以文章正文下方添加一条评论。
+
+#### 4.成功登录的角色查看文章列表且可以删除选中的文章。
+
+#### 5.成功登录的角色查看文章列表且可以添加一篇新的文章。
+
+#### 6.成功登录的角色查看文章列表且可以修改选择的文章。
+
+#### 7.成功登录的角色查看文章正文且可以删除一条评论。
 
 ### 参与角色
 管理员，用户
@@ -179,7 +185,7 @@ size,int,大小,默认为10
 * 情景：成功登录的角色可以文章正文下方添加一条评论。
 * url：http://localhost:8089/psychology/v1/comment/{article-id}/{user-id}
 * 方法：put
-* 权限：管理员，用户
+* 权限：管理员，用户，老师
 * requestbody：
 ```json
 {} //一个comment 实体
@@ -259,10 +265,13 @@ size,int,大小,默认为10
 
 ### 场景
 
-1. 登录
-2. 注册
-3. 以一个列表查看所有的用户(支持分页)
-4. 删除用户
+#### 1.登录
+
+#### 2.注册
+
+#### 3.以一个列表查看所有的用户(支持分页)
+
+#### 4.删除用户
 
 ### 参与角色
 
@@ -284,8 +293,10 @@ size,int,大小,默认为10
 id,int,用户id
 username,varchar(255),用户名
 password,varchar(255),密码
+introduce,text,简介
+phone,int,手机
 image,mdeiumblob,图像
-role,int,权限
+role,int,权限，0,代表管理员，1代表用户，2代表老师
 ```
 
 2. 验证码
@@ -294,6 +305,15 @@ role,int,权限
 id,int,验证码id
 code,int,验证码
 used,int,是否用过，1代表用过，0为默认值
+```
+
+3. 预约
+
+```
+id,int,主键
+context,text,内容
+user_id,用户id
+expert_id
 ```
 
 
@@ -306,6 +326,9 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `phone` int(11) DEFAULT NULL,
+  `introduce` text,
+  `context` text,
   `image` mediumblob,
   `role` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -344,8 +367,12 @@ CREATE TABLE `code` (
 * form参数
 
 ```
+name=frasp
 ussername=aaaa
 password=aaaa
+introduce=aaaa
+phone=1213123
+role=1 or 2
 code=aaaa
 ```
 
@@ -385,6 +412,15 @@ code=aaaa
 
 * 返回参数
 
+```
+{
+  "code": 200,
+  "message": "sucess"
+}
+```
+
+
+
 #### 3.查看所有的用户
 
 * 情景：以一个列表查看所有的用户(支持分页)
@@ -416,6 +452,174 @@ size,int,大小,默认为10
 * 方法：delete
 * 权限：管理员
 * 返回参数
+
+```
+{
+  "code": 200,
+  "message": "sucess"
+}
+```
+
+
+
+## 预约模块
+
+### 场景
+
+#### 1.成功登录角色可以查看老师列表
+
+#### 2.成功登录角色可以预约一个老师
+
+#### 3.成功登录的老师可以查看自己预约的老师
+
+#### 4.成功登录的角色可以查看自己被预约的情况
+
+#### 5.成功登录的角色可以完成一个预约
+
+### 参与角色
+
+用户，老师
+
+### 参与实体
+
+用户，预约表
+
+### 权限
+
+老师角色可以完成4，5
+
+用户角色可以完成1，2，3
+
+### 实体
+
+1. 预约表
+
+```
+id,int,主键
+time,varchar(255),预约时间
+teacher_id,int,老师用户的id
+user_id,int,用户id
+finished,int，1代表已经完成，0代表未完成
+```
+
+#### 实体sql
+
+```sql
+CREATE TABLE `appointment` (
+  `id` int(11) NOT NULL,
+  `time` varchar(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
+  `teacher_id` int(255) NOT NULL,
+  `finished` int(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `teacher_pk` (`teacher_id`),
+  CONSTRAINT `teacher_pk` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+### api接口
+
+#### 1. 查看老师列表
+
+* 情景：用户查看老师列表
+* url：http://localhost:8089/psychology/v1/appointment/list
+* 方法：get
+* 权限：无
+* 请求参数
+
+```
+page,int,页数,默认为0
+size,int,大小,默认为10
+```
+
+* 返回参数：
+
+```
+{
+  "teachers": [{},{}], //user中对应老师的实体列表
+  "page": 0,
+  "size": 10,
+  "total": 100
+}
+```
+
+#### 2. 预约一个老师
+
+* 情景：用户预约一个老师
+* url：http://localhost:8089/psychology/v1/appointment
+* 方法：put
+* 权限：用户
+* 请求参数
+
+```
+user_id,int,用户id
+teacher_id,int,老师id
+```
+
+* 返回参数：
+
+```
+{
+  "code": 200,
+  "message": "sucess"
+}
+```
+
+#### 3.查看自己预约
+
+* 场景：用户查看自己的预约
+* url：http://localhost:8089/psychology/v1/appointment/{user_id}/user
+* 方法：get
+* 权限：用户
+* 请求参数：
+
+```
+page,int,页数,默认为0
+size,int,大小,默认为10
+```
+
+* 返回参数：
+
+```
+{
+  "teachers": [{},{}], //user中对应老师的实体列表
+  "page": 0,
+  "size": 10,
+  "total": 100
+}
+```
+
+#### 4. 查看预约自己的用户
+
+* 场景：老师查看预约自己的用户
+* url：http://localhost:8089/psychology/v1/appointment/{teacher_id}/teacher
+* 方法：get
+* 权限：老师
+* 请求参数：
+
+```
+page,int,页数,默认为0
+size,int,大小,默认为10
+```
+
+* 返回参数：
+
+```
+{
+  "users": [{},{}], //user中对应老师的实体列表
+  "page": 0,
+  "size": 10,
+  "total": 100
+}
+```
+
+#### 5. 完成预约
+
+* 情景：老师完成一个预约
+* url：http://localhost:8089/psychology/v1/appointment/{appointment_id}/finished/{teacher_id}
+* 方法：post
+* 权限：老师
+* 返回参数：
 
 ```
 {
