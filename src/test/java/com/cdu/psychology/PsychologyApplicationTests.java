@@ -1,12 +1,13 @@
 package com.cdu.psychology;
-
-import com.cdu.psychology.Dao.MybatisTest;
 import com.cdu.psychology.controller.ArticleControllerTest;
 import com.cdu.psychology.controller.CommentControllerTest;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@RunWith(SpringRunner.class)
+@SpringBootTest()
 class PsychologyApplicationTests {
 
     @Test
@@ -17,9 +18,4 @@ class PsychologyApplicationTests {
         new ArticleControllerTest().testAll();
         new CommentControllerTest().testAll();
     }
-    @Test
-    void mybatisTest(){
-        new MybatisTest().connectTest();
-    }
-
 }

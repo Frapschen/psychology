@@ -628,3 +628,8 @@ size,int,大小,默认为10
 }
 ```
 
+# 测试
+1. 数据库连接测试：
+```
+http://localhost:8089/psychology/v1/user/ping
+```

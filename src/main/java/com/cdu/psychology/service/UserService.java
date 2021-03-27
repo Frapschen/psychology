@@ -1,4 +1,8 @@
 package com.cdu.psychology.service;
 
-public class UserService {
+import org.springframework.stereotype.Service;
+
+
+public interface UserService {
+    int pingUser();
 }
