@@ -5,6 +5,7 @@ import com.cdu.psychology.entity.User;
 import com.cdu.psychology.service.CommonService;
 import com.cdu.psychology.service.UserService;
 import com.cdu.psychology.utils.Base64Util;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -83,12 +85,10 @@ public class UserController {
         return data;
     }
     @GetMapping()
-    public Map<String, Object> getUserList(@RequestParam(defaultValue = "0", required = false) int page,
+    public PageInfo<User> getUsersList(@RequestParam(defaultValue = "0", required = false) int page,
                                            @RequestParam(defaultValue = "10", required = false) int size){
-        Map<String, Object> data = new HashMap<>();
-        data.put("message","hello");
-        data.put("message1",page);
-        return data;
+        PageInfo<User> queryResult = userService.findAllUserByPageS(page, size);
+        return queryResult;
     }
     @DeleteMapping("/{id}")
     public Map<String, Object> deleteUser(@PathVariable(name = "id") int id){

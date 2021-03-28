@@ -261,7 +261,7 @@ size,int,大小,默认为10
 }
 ```
 
-## 用户模块
+## 用户模块-end
 
 ### 场景
 
@@ -445,16 +445,10 @@ code=aaaa
 
 
 
-
-
-
-
-
-
-#### 3.查看所有的用户
+#### 3.查看所有的用户-end
 
 * 情景：以一个列表查看所有的用户(支持分页)
-* url：http://ip:8089/psychology/v1/user/list
+* url：http://ip:8089/psychology/v1/user
 * 方法：get
 * 权限：管理员
 * 请求参数：
@@ -468,10 +462,86 @@ size,int,大小,默认为10
 
 ```
 {
-  "users": [{},{}], //article的实体列表
-  "page": 0,
-  "size": 10,
-  "total": 100
+    "pageNum": 1,
+    "pageSize": 5,
+    "size": 5,
+    "startRow": 1,
+    "endRow": 5,
+    "total": 13,
+    "pages": 3,
+    "list": [
+        {
+            "id": 1,
+            "name": null,
+            "username": "啊手动阀",
+            "password": "123",
+            "introduce": null,
+            "phone": null,
+            "image": null,
+            "imageByte": null,
+            "role": 0
+        },
+        {
+            "id": 2,
+            "name": null,
+            "username": "士大夫",
+            "password": "123456",
+            "introduce": null,
+            "phone": null,
+            "image": null,
+            "imageByte": null,
+            "role": 0
+        },
+        {
+            "id": 6,
+            "name": null,
+            "username": "啊手动阀",
+            "password": "asdf",
+            "introduce": null,
+            "phone": "",
+            "image": null,
+            "imageByte": null,
+            "role": 1
+        },
+        {
+            "id": 7,
+            "name": null,
+            "username": "asdf",
+            "password": "ASDF",
+            "introduce": null,
+            "phone": "",
+            "image": null,
+            "imageByte": null,
+            "role": 1
+        },
+        {
+            "id": 8,
+            "name": null,
+            "username": "ASDFX",
+            "password": "ASDF",
+            "introduce": null,
+            "phone": "",
+            "image": null,
+            "imageByte": null,
+            "role": 1
+        }
+    ],
+    "prePage": 0,
+    "nextPage": 2,
+    "isFirstPage": true,
+    "isLastPage": false,
+    "hasPreviousPage": false,
+    "hasNextPage": true,
+    "navigatePages": 8,
+    "navigatepageNums": [
+        1,
+        2,
+        3
+    ],
+    "navigateFirstPage": 1,
+    "navigateLastPage": 3,
+    "firstPage": 1,
+    "lastPage": 3
 }
 ```
 
