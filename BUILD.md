@@ -1,0 +1,20 @@
+# Build
+
+### maven package
+
+```shell
+mvn clean package -Dmaven.test.skip=true
+```
+
+## docker build
+
+```shell
+docker build -t psychology:0.1 .
+```
+
+### doker run
+
+```shell
+docker run -d -p 8090:8090 --name psychology psychology:x.x
+```
+

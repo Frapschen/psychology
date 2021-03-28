@@ -113,7 +113,7 @@ CREATE TABLE `conmment` (
 #### 1.显示所有文章
 
 * 情景：成功登录的角色查看文章列表，如果有多个，以10个文章为分页。
-* url：http://localhost:8089/psychology/v1/article/list
+* url：http://ip:8089/psychology/v1/article/list
 * 方法：get
 * 权限：无
 * query参数：
@@ -136,7 +136,7 @@ size,int,大小,默认为10
 * 情景：成功登录的点击文章列表中的某一个文章，进入文章正文，同时可以看到最多10
   条属于该文章的评论且按最新时间倒序排列。
 
-* url：http://localhost:8089/psychology/v1/article/{id}
+* url：http://ip:8089/psychology/v1/article/{id}
 * 方法：get
 * 权限：管理员，用户
 * 返回参数：
@@ -154,7 +154,7 @@ size,int,大小,默认为10
 ##### 2.1 查询评论
 
 * 情景：用户在文章正文，查看下一页评论
-* url：http://localhost:8089/psychology/v1/comment
+* url：http://ip:8089/psychology/v1/comment
 * 方法：get
 * 权限：管理员，用户
 * qury参数：
@@ -183,7 +183,7 @@ size,int,大小,默认为10
 #### 3.评论指定的文章
 
 * 情景：成功登录的角色可以文章正文下方添加一条评论。
-* url：http://localhost:8089/psychology/v1/comment/{article-id}/{user-id}
+* url：http://ip:8089/psychology/v1/comment/{article-id}/{user-id}
 * 方法：put
 * 权限：管理员，用户，老师
 * requestbody：
@@ -201,7 +201,7 @@ size,int,大小,默认为10
 #### 4.删除选中文章
 
 情景：成功登录的角色查看文章列表且可以删除选中的文章。
-* url：http://localhost:8089/psychology/v1/article/{id}
+* url：http://ip:8089/psychology/v1/article/{id}
 * 方法：delete
 * 权限：管理员
 * 返回参数：
@@ -215,7 +215,7 @@ size,int,大小,默认为10
 #### 5. 添加一篇文章
 
 情景：成功登录的角色查看文章列表且可以添加一篇新的文章。
-* url http://localhost:8089/psychology/v1/article
+* url http://ip:8089/psychology/v1/article
 * 方法：put
 * 权限：管理员
 * requestbody:
@@ -233,7 +233,7 @@ size,int,大小,默认为10
 #### 6. 修改一篇文章
 
 * 情景：成功登录的角色查看文章列表且可以修改选择的文章。
-* url：http://localhost:8089/psychology/v1/article
+* url：http://ip:8089/psychology/v1/article
 * 方法：post
 * 权限：管理员
 * requestbody:
@@ -250,7 +250,7 @@ size,int,大小,默认为10
 #### 7. 删除评论
 
 * 情景：成功登录的角色查看文章正文且可以删除一条评论。
-* url：http://localhost:8089/psychology/v1/comment/{id}
+* url：http://ip:8089/psychology/v1/comment/{id}
 * 方法：delete
 * 权限：管理员
 * 返回参数：
@@ -348,7 +348,7 @@ CREATE TABLE `code` (
 #### 0.验证码
 
 * 请求：发起登录活动
-* url：http://localhost:8089/psychology/v1/common/code
+* url：http://ip:8089/psychology/v1/common/code
 * 方法：get
 * 权限：无
 * 返回参数：
@@ -361,7 +361,7 @@ CREATE TABLE `code` (
 
 * 情景：发起一个登录活动
 
-* url：http://localhost:8089/psychology/v1/user
+* url：http://ip:8089/psychology/v1/user
 * 方法：post
 * 权限：无
 * form参数
@@ -398,7 +398,7 @@ code=aaaa
 #### 2.注册
 
 * 情景：注册一个账号
-* url：http://localhost:8089/psychology/v1/user
+* url：http://ip:8089/psychology/v1/user
 * 方法：put
 * 权限：无
 * form表单
@@ -424,7 +424,7 @@ code=aaaa
 #### 3.查看所有的用户
 
 * 情景：以一个列表查看所有的用户(支持分页)
-* url：http://localhost:8089/psychology/v1/user/list
+* url：http://ip:8089/psychology/v1/user/list
 * 方法：get
 * 权限：管理员
 * 请求参数：
@@ -448,7 +448,7 @@ size,int,大小,默认为10
 #### 4.删除用户
 
 * 情景：删除一个用户
-* url：http://localhost:8089/psychology/v1/user/{id}
+* url：http://ip:8089/psychology/v1/user/{id}
 * 方法：delete
 * 权限：管理员
 * 返回参数
@@ -522,7 +522,7 @@ CREATE TABLE `appointment` (
 #### 1. 查看老师列表
 
 * 情景：用户查看老师列表
-* url：http://localhost:8089/psychology/v1/appointment/list
+* url：http://ip:8089/psychology/v1/appointment/list
 * 方法：get
 * 权限：无
 * 请求参数
@@ -546,7 +546,7 @@ size,int,大小,默认为10
 #### 2. 预约一个老师
 
 * 情景：用户预约一个老师
-* url：http://localhost:8089/psychology/v1/appointment
+* url：http://ip:8089/psychology/v1/appointment
 * 方法：put
 * 权限：用户
 * 请求参数
@@ -568,7 +568,7 @@ teacher_id,int,老师id
 #### 3.查看自己预约
 
 * 场景：用户查看自己的预约
-* url：http://localhost:8089/psychology/v1/appointment/{user_id}/user
+* url：http://ip:8089/psychology/v1/appointment/{user_id}/user
 * 方法：get
 * 权限：用户
 * 请求参数：
@@ -592,7 +592,7 @@ size,int,大小,默认为10
 #### 4. 查看预约自己的用户
 
 * 场景：老师查看预约自己的用户
-* url：http://localhost:8089/psychology/v1/appointment/{teacher_id}/teacher
+* url：http://ip:8089/psychology/v1/appointment/{teacher_id}/teacher
 * 方法：get
 * 权限：老师
 * 请求参数：
@@ -616,7 +616,7 @@ size,int,大小,默认为10
 #### 5. 完成预约
 
 * 情景：老师完成一个预约
-* url：http://localhost:8089/psychology/v1/appointment/{appointment_id}/finished/{teacher_id}
+* url：http://ip:8089/psychology/v1/appointment/{appointment_id}/finished/{teacher_id}
 * 方法：post
 * 权限：老师
 * 返回参数：
@@ -629,7 +629,11 @@ size,int,大小,默认为10
 ```
 
 # 测试
+
+* 先连接VPN
+* ip=192.168.123.188
+
 1. 数据库连接测试：
 ```
-http://localhost:8089/psychology/v1/user/ping
+http://ip:8089/psychology/v1/user/ping
 ```
