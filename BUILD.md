@@ -1,5 +1,11 @@
 # Build
 
+## pull
+
+```shell
+git pull https://github.com/Frapschen/psychology.git
+```
+
 ### maven package
 
 ```shell
