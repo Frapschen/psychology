@@ -30,11 +30,6 @@ public class CommonController {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         boolean flag = ImageIO.write(bufferedImage, "jpeg", out);
         byte[] b = out.toByteArray();
-//        try {
-//            return ImageIO.read(new FileInputStream(new File("D:/test.jpg")));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         return b;
     }
 }

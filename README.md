@@ -303,7 +303,7 @@ role,int,权限，0,代表管理员，1代表用户，2代表老师
 
 ```
 id,int,验证码id
-code,int,验证码
+code,varchar,验证码
 used,int,是否用过，1代表用过，0为默认值
 ```
 
@@ -324,11 +324,11 @@ expert_id
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `phone` int(11) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT '',
   `introduce` text,
-  `context` text,
   `image` mediumblob,
   `role` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -337,7 +337,7 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `code`;
 CREATE TABLE `code` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
-  `code` int(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
   `used` int(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -345,7 +345,7 @@ CREATE TABLE `code` (
 
 ### api接口
 
-#### 0.验证码
+#### 0.验证码-end
 
 * 请求：发起登录活动
 * url：http://ip:8089/psychology/v1/common/code
@@ -357,7 +357,7 @@ CREATE TABLE `code` (
 一张图片
 ```
 
-#### 1.登录
+#### 1.登录-end
 
 * 情景：发起一个登录活动
 
@@ -367,12 +367,8 @@ CREATE TABLE `code` (
 * form参数
 
 ```
-name=frasp
 ussername=aaaa
 password=aaaa
-introduce=aaaa
-phone=1213123
-role=1 or 2
 code=aaaa
 ```
 
@@ -380,7 +376,7 @@ code=aaaa
 ```json
 {
     "code":200,
-    "user-id": 1
+    "data": user object
 }
 ```
 
@@ -393,9 +389,18 @@ code=aaaa
 }
 ```
 
+密码或账号出错
+
+```
+{
+    "code":401,
+    "user-id": -1
+}
+```
 
 
-#### 2.注册
+
+#### 2.注册-end
 
 * 情景：注册一个账号
 * url：http://ip:8089/psychology/v1/user
@@ -404,8 +409,12 @@ code=aaaa
 * form表单
 
 ```
+name=frasp
 ussername=aaaa
 password=aaaa
+introduce=aaaa
+phone=1213123
+role=1 or 2
 image=images.png
 code=aaaa
 ```
@@ -414,10 +423,31 @@ code=aaaa
 
 ```
 {
-  "code": 200,
-  "message": "sucess"
+  "code": 200
 }
 ```
+
+验证码出错
+
+```
+{
+  "code": 412
+}
+```
+
+注册失败
+
+```
+{
+  "code": 413
+}
+```
+
+
+
+
+
+
 
 
 
@@ -445,7 +475,7 @@ size,int,大小,默认为10
 }
 ```
 
-#### 4.删除用户
+#### 4.删除用户-end  
 
 * 情景：删除一个用户
 * url：http://ip:8089/psychology/v1/user/{id}

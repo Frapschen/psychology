@@ -10,7 +10,7 @@ import java.util.Random;
 public final class GraphicHelper {
     /**
      * 以字符串形式返回生成的验证码，同时输出一个图片
-     *
+     *  cite: https://blog.csdn.net/weixin_36380516/article/details/56497508
      * @param width
      *            图片的宽度
      * @param height
@@ -24,14 +24,9 @@ public final class GraphicHelper {
     public static String create(final int width, final int height, final String imgType, BufferedImage image) {
         StringBuffer sb = new StringBuffer();
         Random random = new Random();
-
-//        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-//        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphic = image.getGraphics();
-
         graphic.setColor(Color.getColor("F8F8F8"));
         graphic.fillRect(0, 0, width, height);
-
         Color[] colors = new Color[] { Color.BLUE, Color.GRAY, Color.GREEN, Color.RED, Color.BLACK, Color.ORANGE,
                 Color.CYAN };
         // 在 "画板"上生成干扰线条 ( 50 是线条个数)
@@ -56,11 +51,6 @@ public final class GraphicHelper {
             graphic.drawString(s, i * (width / 6), height - (height / 3));
         }
         graphic.dispose();
-//        try {
-//            ImageIO.write(image, imgType, output);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         return sb.toString();
     }
 }

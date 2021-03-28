@@ -11,4 +11,7 @@ public interface  UserDao {
 
     List<User> getUser();
     List<User> getUserCount();
+    User getUserByLogin(String u, String p);
+    int register(User u);
+    int delete(int id);
 }
