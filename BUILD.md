@@ -3,7 +3,7 @@
 ## pull
 
 ```shell
-git pull https://github.com/Frapschen/psychology.git
+git clone https://github.com/Frapschen/psychology.git
 ```
 
 ### maven package
