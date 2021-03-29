@@ -13,4 +13,5 @@ public interface UserService {
     int register(User u);
     int delete(int id);
     PageInfo<User> findAllUserByPageS(int pageNum, int pageSize);
+    int checkRole(int user_id,int role);
 }

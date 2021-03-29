@@ -15,9 +15,6 @@ import java.util.List;
 public class UserServiceImpl  implements UserService {
     @Autowired
     private UserDao userDao;
-    @Autowired
-    private CommonService commonService;
-
     @Override
     public int pingUser() {
         List<User> u =userDao.getUserCount();
@@ -45,5 +42,17 @@ public class UserServiceImpl  implements UserService {
         List<User> lists = userDao.getUser();
         PageInfo<User> pageInfo = new PageInfo<User>(lists);
         return pageInfo;
+    }
+
+    @Override
+    public int checkRole(int user_id, int role) {
+        User u = userDao.getUserById(user_id);
+        if(u==null){
+            return 0;
+        }
+        if(role != u.role){
+            return 0;
+        }
+        return 1;
     }
 }

@@ -21,6 +21,6 @@ docker build -t psychology:0.1 .
 ### doker run
 
 ```shell
-docker run -d -p 8090:8090 --name psychology psychology:x.x
+docker run  -d -p 8089:8089 --name psychology psychology:x.x
 ```
 

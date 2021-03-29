@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     private CommonService commonService;
 
-    @PostMapping()
+    @PostMapping("/login")
     public Map<String, Object> login(@RequestParam(name = "username",required = true) String username,
                                      @RequestParam(name = "password",required = true) String password,
                                      @RequestParam(name = "code",required = true) String code){
@@ -50,7 +50,7 @@ public class UserController {
         }
         return data;
     }
-    @PutMapping()
+    @PutMapping("/register")
     public Map<String, Object> register(@RequestParam(name = "name",required = true) String name,
                                         @RequestParam(name = "username",required = true) String username,
                                         @RequestParam(name = "password",required = true) String password,
@@ -85,14 +85,27 @@ public class UserController {
         return data;
     }
     @GetMapping()
-    public PageInfo<User> getUsersList(@RequestParam(defaultValue = "0", required = false) int page,
-                                           @RequestParam(defaultValue = "10", required = false) int size){
+    public Map<String, Object> getUsersList(@RequestParam(name = "page",defaultValue = "0", required = false) int page,
+                                           @RequestParam(name = "size",defaultValue = "10", required = false) int size,
+                                       @RequestParam(name = "user_id",required = true) int user_id){
+        Map<String, Object> data = new HashMap<>();
+        if(userService.checkRole(user_id,0)==0){
+            data.put("code",413);
+            return data;
+        }
         PageInfo<User> queryResult = userService.findAllUserByPageS(page, size);
-        return queryResult;
+        data.put("code",200);
+        data.put("data",queryResult);
+        return data;
     }
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteUser(@PathVariable(name = "id") int id){
+    public Map<String, Object> deleteUser(@PathVariable(name = "id") int id,
+                                          @RequestParam(name = "user_id",required = true)int user_id){
         Map<String, Object> data = new HashMap<>();
+        if(userService.checkRole(user_id,0)==0){
+            data.put("code",413);
+            return data;
+        }
         if(userService.delete(id)!=1){
             data.put("code",413);
         }

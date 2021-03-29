@@ -361,7 +361,7 @@ CREATE TABLE `code` (
 
 * 情景：发起一个登录活动
 
-* url：http://ip:8089/psychology/v1/user
+* url：http://ip:8089/psychology/v1/user/login
 * 方法：post
 * 权限：无
 * form参数
@@ -376,7 +376,7 @@ code=aaaa
 ```json
 {
     "code":200,
-    "data": user object
+    "data": user object 其中imageByte 是图像的二进制数据，用<img>标签可以显示
 }
 ```
 
@@ -403,7 +403,7 @@ code=aaaa
 #### 2.注册-end
 
 * 情景：注册一个账号
-* url：http://ip:8089/psychology/v1/user
+* url：http://ip:8089/psychology/v1/user/register
 * 方法：put
 * 权限：无
 * form表单
@@ -456,6 +456,7 @@ code=aaaa
 ```
 page,int,页数,默认为0
 size,int,大小,默认为10
+user_id,int,用户id
 ```
 
 * 返回参数：
@@ -551,6 +552,14 @@ size,int,大小,默认为10
 * url：http://ip:8089/psychology/v1/user/{id}
 * 方法：delete
 * 权限：管理员
+* 参数
+
+```
+user_id,int,管理员id
+```
+
+
+
 * 返回参数
 
 ```
@@ -562,7 +571,7 @@ size,int,大小,默认为10
 
 
 
-## 预约模块
+## 预约模块-end
 
 ### 场景
 
@@ -606,11 +615,11 @@ finished,int，1代表已经完成，0代表未完成
 
 ```sql
 CREATE TABLE `appointment` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` varchar(255) NOT NULL,
   `user_id` int(255) NOT NULL,
   `teacher_id` int(255) NOT NULL,
-  `finished` int(255) NOT NULL,
+  `finished` int(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `teacher_pk` (`teacher_id`),
   CONSTRAINT `teacher_pk` FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
@@ -619,7 +628,7 @@ CREATE TABLE `appointment` (
 
 ### api接口
 
-#### 1. 查看老师列表
+#### 1. 查看老师列表-end
 
 * 情景：用户查看老师列表
 * url：http://ip:8089/psychology/v1/appointment/list
@@ -628,7 +637,7 @@ CREATE TABLE `appointment` (
 * 请求参数
 
 ```
-page,int,页数,默认为0
+page,int,页数,默认为1
 size,int,大小,默认为10
 ```
 
@@ -643,10 +652,10 @@ size,int,大小,默认为10
 }
 ```
 
-#### 2. 预约一个老师
+#### 2. 预约一个老师-end
 
 * 情景：用户预约一个老师
-* url：http://ip:8089/psychology/v1/appointment
+* url：http://ip:8089/psychology/v1/appointment/{user_id}/{teacher_id}
 * 方法：put
 * 权限：用户
 * 请求参数
@@ -665,7 +674,15 @@ teacher_id,int,老师id
 }
 ```
 
-#### 3.查看自己预约
+错误
+
+```
+{
+  "code": 413
+}
+```
+
+#### 3.查看自己预约-end
 
 * 场景：用户查看自己的预约
 * url：http://ip:8089/psychology/v1/appointment/{user_id}/user
@@ -689,7 +706,7 @@ size,int,大小,默认为10
 }
 ```
 
-#### 4. 查看预约自己的用户
+#### 4. 查看预约自己的用户-end
 
 * 场景：老师查看预约自己的用户
 * url：http://ip:8089/psychology/v1/appointment/{teacher_id}/teacher
@@ -713,10 +730,10 @@ size,int,大小,默认为10
 }
 ```
 
-#### 5. 完成预约
+#### 5. 完成预约-end
 
 * 情景：老师完成一个预约
-* url：http://ip:8089/psychology/v1/appointment/{appointment_id}/finished/{teacher_id}
+* url：http://ip:8089/psychology/v1/appointment/{appointment_id}/finish/{teacher_id}
 * 方法：post
 * 权限：老师
 * 返回参数：
