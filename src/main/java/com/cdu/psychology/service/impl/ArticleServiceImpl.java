@@ -21,7 +21,7 @@ public class ArticleServiceImpl implements ArticeService {
     public PageInfo<Article> findAllArticeByPageS(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Article> lists = articleDao.getArticle();
-        PageInfo<Article> pageInfo = new PageInfo<Article>(lists);
+        PageInfo<Article> pageInfo = new PageInfo<>(lists);
         return pageInfo;
     }
     @Override

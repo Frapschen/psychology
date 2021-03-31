@@ -9,10 +9,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ArticleDao {
-    @Select("select * from article")
     List<Article> getArticle();
-
-    @Select("select * from article where id = #{id}")
     Article getArticleById(int id);
 
 }

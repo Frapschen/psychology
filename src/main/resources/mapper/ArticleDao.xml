@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdu.psychology.dao.ArticleDao">
+    <resultMap id="userInComment" type="com.cdu.psychology.entity.User">
+        <id column="id" property="id"/>
+        <result column="u_id" property="id"/>
+        <result column="u_name" property="name"/>
+        <result column="u_image" property="image"/>
+    </resultMap>
+    <resultMap id="articleToComments" type="com.cdu.psychology.entity.Article">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"/>
+        <result column="introduce" property="introduce"/>
+        <result column="content" property="context"/>
+        <result column="created_time" property="create_time"/>
+        <collection property="comments" ofType="com.cdu.psychology.entity.Comment">
+            <id column="c_id" property="id"></id>
+            <result column="c_content" property="contxt"/>
+            <result column="user_id" property="user_id"/>
+            <result column="article_id" property="article_id"/>
+            <association property="user" resultMap="userInComment"/>
+        </collection>
+    </resultMap>
+    <select id="getArticle" resultMap="articleToComments">
+        select article.id,
+        article.title,
+        article.introduce,
+        article.content,
+        article.created_time,
+        c_id,
+        c_content,
+        u_id,
+        u_name,
+        u_image from article join
+        (select comment.id c_id,content c_content,user_id u_id,article_id,name u_name,image u_image from comment join user on comment.user_id=user.id) b on
+         article.id=b.article_id
+    </select>
+</mapper>

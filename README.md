@@ -38,6 +38,7 @@ name,varchar(255),名字
 introduce,varchar(500)，简介
 context,mediumblob,内容
 created_time,varchar(100),创建时间
+comments,object,评论实体
 ```
 
 2. 评论

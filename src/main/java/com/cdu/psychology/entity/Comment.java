@@ -8,4 +8,5 @@ public class Comment {
     @Getter @Setter public String contxt;
     @Getter @Setter public int user_id;
     @Getter @Setter public int article_id;
+    @Getter @Setter public User user;
 }
