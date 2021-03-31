@@ -27,7 +27,7 @@ public class CommentController {
     }
     @GetMapping()
     public Map<String, Object> getComment(@RequestParam(name = "article-id",required = true) int id,
-                                          @RequestParam(name = "page",required = false,defaultValue = "0") int page,
+                                          @RequestParam(name = "page",required = false,defaultValue = "1") int page,
                                           @RequestParam(name = "size",required = false,defaultValue = "10") int size){
         Map<String, Object> data = new HashMap<>();
         data.put("message1","hello article = "+id);

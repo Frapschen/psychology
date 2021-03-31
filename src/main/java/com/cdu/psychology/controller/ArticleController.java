@@ -1,6 +1,10 @@
 package com.cdu.psychology.controller;
 
 import com.cdu.psychology.entity.Article;
+import com.cdu.psychology.entity.User;
+import com.cdu.psychology.service.ArticeService;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -10,18 +14,29 @@ import java.util.Map;
 @RequestMapping("/v1/article")
 public class ArticleController {
 
+    @Autowired
+    private ArticeService articeService;
+
     @GetMapping("/list")
-    public Map<String, Object> getArticlesList(@RequestParam(defaultValue = "0", required = false) int page,
+    public Map<String, Object> getArticlesList(@RequestParam(defaultValue = "1", required = false) int page,
                                                     @RequestParam(defaultValue = "10", required = false) int size){
         Map<String, Object> data = new HashMap<>();
-        data.put("message","hello");
+        PageInfo<Article> queryResult = articeService.findAllArticeByPageS(page, size);
+        data.put("code",200);
+        data.put("data",queryResult);
         return data;
     }
 
     @GetMapping("/{id}")
     public Map<String,Object> geArticleById(@PathVariable(required = true) int id){
         Map<String, Object> data = new HashMap<>();
-        data.put("message","hello,article id = "+id);
+        Article article = articeService.getArticeById(id);
+        if (article==null){
+            data.put("code",413);
+            return data;
+        }
+        data.put("code",200);
+        data.put("article",article);
         return data;
     }
 

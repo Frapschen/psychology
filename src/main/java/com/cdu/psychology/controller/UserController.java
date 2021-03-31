@@ -85,7 +85,7 @@ public class UserController {
         return data;
     }
     @GetMapping()
-    public Map<String, Object> getUsersList(@RequestParam(name = "page",defaultValue = "0", required = false) int page,
+    public Map<String, Object> getUsersList(@RequestParam(name = "page",defaultValue = "1", required = false) int page,
                                            @RequestParam(name = "size",defaultValue = "10", required = false) int size,
                                        @RequestParam(name = "user_id",required = true) int user_id){
         Map<String, Object> data = new HashMap<>();
