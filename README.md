@@ -1,7 +1,7 @@
 # psychology
 a web project
 
-## 文章模块
+## 文章模块-end
 
 ### 场景
 #### 1.成功登录的角色查看文章列表，如果有多个，以10个文章为分页。
@@ -36,7 +36,7 @@ colums:
 id,int,主键
 name,varchar(255),名字
 introduce,varchar(500)，简介
-context,mediumblob,内容
+content,mediumblob,内容
 created_time,varchar(100),创建时间
 comments,object,评论实体
 ```
@@ -111,7 +111,7 @@ CREATE TABLE `conmment` (
 
 ### api接口
 
-#### 1.显示所有文章
+#### 1.显示所有文章-end
 
 * 情景：成功登录的角色查看文章列表，如果有多个，以10个文章为分页。
 * url：http://localhost:8089/psychology/v1/article/list
@@ -132,7 +132,7 @@ size,int,大小,默认为10
 }
 ```
 
-#### 2.查询指定id的文章
+#### 2.查询指定id的文章-end
 
 * 情景：成功登录的点击文章列表中的某一个文章，进入文章正文，同时可以看到最多10
   条属于该文章的评论且按最新时间倒序排列。
@@ -181,15 +181,15 @@ size,int,大小,默认为10
 
 
 
-#### 3.评论指定的文章
+#### 3.评论指定的文章-end
 
 * 情景：成功登录的角色可以文章正文下方添加一条评论。
 * url：http://localhost:8089/psychology/v1/comment/{article-id}/{user-id}
 * 方法：put
 * 权限：管理员，用户，老师
-* requestbody：
+* 请求参数：
 ```json
-{} //一个comment 实体
+comment,string,评论内容
 ```
 * 返回参数：
 ```json
@@ -199,10 +199,10 @@ size,int,大小,默认为10
 }
 ```
 
-#### 4.删除选中文章
+#### 4.删除选中文章-end
 
 情景：成功登录的角色查看文章列表且可以删除选中的文章。
-* url：http://localhost:8089/psychology/v1/article/{id}
+* url：http://localhost:8089/psychology/v1/article//{article_id}/{user_id}
 * 方法：delete
 * 权限：管理员
 * 返回参数：
@@ -213,28 +213,30 @@ size,int,大小,默认为10
 }
 ```
 
-#### 5. 添加一篇文章
+#### 5. 添加一篇文章-end
 
 情景：成功登录的角色查看文章列表且可以添加一篇新的文章。
-* url http://localhost:8089/psychology/v1/article
+* url http://localhost:8089/psychology/v1/article/{user_id}
 * 方法：put
 * 权限：管理员
 * requestbody:
 ```json
-{} //一个文章的实体
+title,string,标题
+introduce,string,简介
+content,string,内容
+created_time,string,创建时间
 ```
 * 返回参数：
 ```json
 {
   "code": 200,
-  "message": "sucess"
 }
 ```
 
-#### 6. 修改一篇文章
+#### 6. 修改一篇文章-end
 
 * 情景：成功登录的角色查看文章列表且可以修改选择的文章。
-* url：http://localhost:8089/psychology/v1/article
+* url：http://localhost:8089/psychology/v1/article/{article_id}/{user_id}
 * 方法：post
 * 权限：管理员
 * requestbody:
@@ -248,7 +250,7 @@ size,int,大小,默认为10
   "message": "sucess"
 }
 ```
-#### 7. 删除评论
+#### 7. 删除评论-end
 
 * 情景：成功登录的角色查看文章正文且可以删除一条评论。
 * url：http://localhost:8089/psychology/v1/comment/{id}
@@ -654,6 +656,8 @@ size,int,大小,默认为10
 }
 ```
 
+
+
 #### 2. 预约一个老师-end
 
 * 情景：用户预约一个老师
@@ -747,6 +751,366 @@ size,int,大小,默认为10
 }
 ```
 
+## 聊天室模块end
+
+### 场景
+
+#### 1.成功登录的用户进入某个聊天室，收取这个聊天室的信息
+
+#### 2. 成功登录的用户进入某个聊天室，在聊天室发送消息
+
+#### 3. 成功登录的用户进入添加某个聊天室
+
+#### 4. 成功登录的用户进入删除某个聊天室
+
+#### 5. 成功登录的用户查看聊天室列表
+
+### 参与角色
+
+所有人
+
+### 参与实体
+
+user，chat
+
+### 权限
+
+管理员可以添加，删除聊天室
+
+### 实体
+
+chat
+
+```
+id,int,主键
+name,string,房间名字
+introduce,string,简介
+room_id,int,房间号
+```
+
+#### 实体sql
+
+```sql
+CREATE TABLE `chat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `introduce` varchar(255) DEFAULT NULL,
+  `room` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+```
+
+### api接口
+
+### 1.获取房间信息-end
+
+* 情景：用户进入房间
+* url：http://localhost:8089/psychology/v1/chat/list
+* 方法：get
+* 权限：无
+
+* 返回参数：
+
+```
+{
+    "code": 200,
+    "data": [
+        {
+            "id": 1,
+            "name": "test",
+            "introduce": "test",
+            "room": "1asdf"
+        },
+        {
+            "id": 2,
+            "name": "aaa",
+            "introduce": "aaaa",
+            "room": "aaaaa"
+        }
+    ]
+}
+```
+
+### 2.添加聊天室-end
+
+* 情景：用户进入房间
+* url：http://localhost:8089/psychology/v1/chat/{user_id}
+* 方法：put
+* 权限：管理员
+* 请求参数
+
+```
+id,int,房间id
+```
+
+* 返回参数：
+
+```
+{
+    "code": 200
+}
+```
+
+
+
+###  3.删除一个聊天室-end
+
+* 情景：用户进入房间
+* url：http://localhost:8089/psychology/v1/chat/{user_id}
+* 方法：delete
+* 权限：管理员
+* 请求参数
+
+```
+chat_id,string,房间名字
+```
+
+* 返回参数：
+
+```
+{
+    "code": 200
+}
+```
+
+
+
+#### WebSocket接口
+
+* 情景：聊天
+* url：http://localhost:8089/psychology/v1/chat/{room}/room/{userid}
+* 方法：delete
+* 权限：管理员
+* 请求参数
+
+```
+room,int,房间号
+
+```
+
+* 返回参数：
+
+```
+{
+    "code": 200
+}
+```
+
+
+
+## 情景剧
+
+## 实体
+
+1. show(情景表)
+
+```
+id,int,主键
+name,varchar,名字
+introduce,varchar,简介
+image,varchar,图片
+character,varchar,名字
+lead,varchar,名字
+```
+
+2.chapter(章节表)
+
+```
+id,varchar,主键
+name,varchar,名字
+time,varchar,时间
+localtion，varchar,地点
+character,varchar,名字 
+show_id,int,外键
+next,varchar,下一条章节【0，代表起始对话】{XXX-XXX-XXX,XXXXXXXXX}
+```
+
+3. dialogue
+
+```
+id,varchar,主键(XXX-XXX-XXX) (000-000-000)
+character,varchar,人物名字 (旁白[white]，心里活动[inner])
+content,内容
+is_lead,int,1 是，2不是
+four_content,int,四个对话
+chapter_id,int,外键
+next,varchar,下一条对话【代表起始对话】{XXX-XXX-XXX}
+```
+
+4. dialogue_score
+
+```
+id,int,主键
+content1,varchar,内容1
+score1,int,分数1
+content2,varchar,内容2
+score2,int,分数2
+content3,varchar,内容3
+score3,int,分数3
+content4,varchar,内容4
+score4,int,分数4
+chapter_id,int,外键
+```
+
+## api接口
+
+### 1. 添加一个情景剧(show)
+
+* 情景：管理员或老师添加情景剧的总览信息
+* url：http://localhost:8089/psychology/v1/drama/show
+* 方法：put
+* 权限：管理员或老师
+* 请求参数
+
+```
+name,varchar,名字
+introduce,varchar,简介
+image,varchar,图片
+character,varchar,名字
+lead,varchar,主角
+```
+
+* 返回参数：
+
+```
+{
+	"code":200,
+	"show_id":1
+}
+```
+
+### 2. 添加一个章节(chapter)
+
+* 情景：管理员或老师在某个情景剧下添加章节的总览信息
+* url：http://localhost:8089/psychology/v1/drama/chapter
+* 方法：put
+* 权限：管理员或老师
+* 请求参数
+
+```
+name,varchar,名字
+time,varchar,时间
+localtion，varchar,地点
+character,varchar,名字 [赵波;张宁;张宁室友;赵波老乡 | show表中的lead]
+show_id,int,外键
+```
+
+* 返回参数：
+
+```
+{
+	"code":200,
+	"chapter_id":1
+}
+```
+
+### 4. 获取某个章节的角色
+
+* 情景：管理员或老师在获取某个章节中的所有角色
+* url：http://localhost:8089/psychology/v1/drama/chapter/{chapter_id}/character
+* 方法：get
+* 权限：管理员或老师
+
+* 返回参数：
+
+```
+{
+	"code":200,
+	"roles":["aaa","bbb","star"]
+}
+```
+
+### 5. 添加一个对话(dialogue)
+
+* 情景：管理员或老师在某个情景剧某个章节下添加对话
+* url：http://localhost:8089/psychology/v1/drama/dialogue
+* 方法：put
+* 权限：管理员或老师
+* 请求参数
+
+```
+id,varchar,对话id,第一条：(000-000-000 | 000000000 ) 以后的的：[xxx-xxx-xxx]，最后一条(111-111-111)
+character,varchar,角色  if(star) ... else ...
+content,varchar,内容 //content1 content2 content3 content4 | score1 score2 score4 score4
+chapter_id,int,外键
+is_lead,int,1 是 0不是
+next,varchar,下一条对话
+```
+
+* 返回参数：
+
+```
+{
+	"code":200,
+	"next":xxx-xxx-xxx
+}
+```
+
+
+
+### 6. 查情景剧列表
+
+* 情景：用户查情景剧总览列表
+* url：http://localhost:8089/psychology/v1/drama/list
+* 方法：get
+* 权限：管理员或老师
+* 请求参数
+
+```
+page,int,页数,默认为1
+size,int,大小,默认为10
+```
+
+* 返回参数：
+
+```
+分页情景剧列表
+还包括这个情景剧所有的章节id ["xxx-xxx-xxx","xxx-xxx-xxx",...,"xxx-xxx-xxx"]
+```
+
+
+
+### 7.进入某个情景剧的某一章
+
+* 情景：用户查情景剧总览列表
+* url：http://localhost:8089/psychology/v1/drama/{drama_id}/chapter/{chapter_id}
+* 方法：get
+* 权限：管理员或老师
+
+* 返回参数：
+
+```
+某个情景剧第一章节实体内容,
+这个章节所有的["xxx-xxx-xxx","xxx-xxx-xxx",...,"xxx-xxx-xxx"]
+```
+
+
+
+### 8. 开始某个章节的情景
+
+* 情景：用户查情景剧总览列表
+* url：http://localhost:8089/psychology/v1/drama/{drama_id}/chapter/{chapter_id}/{dialogue_id}
+* 方法：get
+* 权限：管理员或老师
+
+* 返回参数：
+
+```
+某个情景剧某章节，某个对话{主角的，非主角的}
+```
+
+注意：
+
+```
+主角的返回对话，包含了他的待选对话内容以及分数，选择某个对话(确定了某个分数)
+```
+
+
+
+
+
+
+
 # 测试
 
 * 先连接VPN
@@ -754,5 +1118,23 @@ size,int,大小,默认为10
 
 1. 数据库连接测试：
 ```
+本地：
 http://localhost:8089/psychology/v1/user/ping
+远端：
+http://192.168.123.188:8089/psychology/v1/user/ping
 ```
+
+### https://blog.csdn.net/qq_31135241/article/details/90369312
+
+```
+curl --include \
+     --no-buffer \
+     --header "Connection: Upgrade" \
+     --header "Upgrade: websocket" \
+     --header "Host: localhost:8089" \
+     --header "Origin: http://localhost:8089" \
+     --header "Sec-WebSocket-Key: SGVsbG8sIHdvcmxkIQ==" \
+     --header "Sec-WebSocket-Version: 13" \
+     http://localhost:8089/psychology/v1/chat/1/room/1
+```
+

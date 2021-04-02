@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CommentService {
     PageInfo<Comment> getCommentsById(int article_id,int page,int size);
+    int setComment(int article_id, int user_id,String content);
+    int deleteComment(int id);
 }
