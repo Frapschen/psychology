@@ -896,11 +896,9 @@ room,int,房间号
 }
 ```
 
-
-
 ## 情景剧
 
-## 实体
+### 实体
 
 1. show(情景表)
 
@@ -952,9 +950,9 @@ score4,int,分数4
 chapter_id,int,外键
 ```
 
-## api接口
+### api接口
 
-### 1. 添加一个情景剧(show)
+#### 1. 添加一个情景剧(show)-end
 
 * 情景：管理员或老师添加情景剧的总览信息
 * url：http://localhost:8089/psychology/v1/drama/show
@@ -968,6 +966,7 @@ introduce,varchar,简介
 image,varchar,图片
 character,varchar,名字
 lead,varchar,主角
+next,varchar,下一个章节
 ```
 
 * 返回参数：
@@ -979,7 +978,7 @@ lead,varchar,主角
 }
 ```
 
-### 2. 添加一个章节(chapter)
+#### 2. 添加一个章节(chapter)
 
 * 情景：管理员或老师在某个情景剧下添加章节的总览信息
 * url：http://localhost:8089/psychology/v1/drama/chapter
@@ -993,6 +992,7 @@ time,varchar,时间
 localtion，varchar,地点
 character,varchar,名字 [赵波;张宁;张宁室友;赵波老乡 | show表中的lead]
 show_id,int,外键
+next,varchar,下一条章节【0，代表起始对话】{XXX-XXX-XXX,XXXXXXXXX}
 ```
 
 * 返回参数：
@@ -1004,7 +1004,7 @@ show_id,int,外键
 }
 ```
 
-### 4. 获取某个章节的角色
+#### 4. 获取某个章节的角色
 
 * 情景：管理员或老师在获取某个章节中的所有角色
 * url：http://localhost:8089/psychology/v1/drama/chapter/{chapter_id}/character
@@ -1020,7 +1020,7 @@ show_id,int,外键
 }
 ```
 
-### 5. 添加一个对话(dialogue)
+#### 5. 添加一个对话(dialogue)
 
 * 情景：管理员或老师在某个情景剧某个章节下添加对话
 * url：http://localhost:8089/psychology/v1/drama/dialogue
@@ -1046,9 +1046,7 @@ next,varchar,下一条对话
 }
 ```
 
-
-
-### 6. 查情景剧列表
+#### 6. 查情景剧列表
 
 * 情景：用户查情景剧总览列表
 * url：http://localhost:8089/psychology/v1/drama/list
@@ -1068,9 +1066,7 @@ size,int,大小,默认为10
 还包括这个情景剧所有的章节id ["xxx-xxx-xxx","xxx-xxx-xxx",...,"xxx-xxx-xxx"]
 ```
 
-
-
-### 7.进入某个情景剧的某一章
+#### 7.进入某个情景剧的某一章
 
 * 情景：用户查情景剧总览列表
 * url：http://localhost:8089/psychology/v1/drama/{drama_id}/chapter/{chapter_id}
@@ -1084,9 +1080,7 @@ size,int,大小,默认为10
 这个章节所有的["xxx-xxx-xxx","xxx-xxx-xxx",...,"xxx-xxx-xxx"]
 ```
 
-
-
-### 8. 开始某个章节的情景
+#### 8. 开始某个章节的情景
 
 * 情景：用户查情景剧总览列表
 * url：http://localhost:8089/psychology/v1/drama/{drama_id}/chapter/{chapter_id}/{dialogue_id}

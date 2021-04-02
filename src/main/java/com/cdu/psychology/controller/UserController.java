@@ -56,8 +56,8 @@ public class UserController {
                                         @RequestParam(name = "password",required = true) String password,
                                         @RequestParam(name = "phone",required = true) String phone,
                                         @RequestParam(name = "introduce",required = true) String introduce,
-                                        @RequestParam(name = "image",required = false) MultipartFile image,
-                                        @RequestParam(name = "role",required = false) int role,
+                                        @RequestParam(name = "image",required = true) MultipartFile image,
+                                        @RequestParam(name = "role",required = true) int role,
                                         @RequestParam(name = "code",required = true) String code) throws IOException {
         Map<String, Object> data = new HashMap<>();
         int c = commonService.checkCode(code);
