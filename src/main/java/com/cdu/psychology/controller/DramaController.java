@@ -53,6 +53,7 @@ public class DramaController {
                                           @RequestParam(name = "localtion",required = true) MultipartFile image,
                                           @RequestParam(name = "character",required = true) String character,
                                           @RequestParam(name = "show_id",required = true) int show_id){
-
+        Map<String, Object> data = new HashMap<>();
+        return data;
     }
 }
