@@ -896,7 +896,7 @@ room,int,房间号
 }
 ```
 
-## 情景剧
+## 情景剧-end
 
 ### 实体
 
@@ -1020,7 +1020,7 @@ next,varchar,下一条章节【0，代表起始对话】{XXX-XXX-XXX,XXXXXXXXX}
 }
 ```
 
-#### 5. 添加一个对话(dialogue)
+#### 5. 添加一个对话end
 
 * 情景：管理员或老师在某个情景剧某个章节下添加对话
 * url：http://localhost:8089/psychology/v1/drama/dialogue
@@ -1033,8 +1033,6 @@ id,varchar,对话id,第一条：(初始： 00000000-0000-0000-0000-000000000000 
 character,varchar,角色  if(star) ... else ...
 content,varchar,内容 //content1 content2 content3 content4 | score1 score2 score4 score4
 chapter_id,int,外键
-is_lead,int,1 是 0不是
-next,varchar,下一条对话
 
 content1,varchar,内容1
 score1,int,分数1
@@ -1055,7 +1053,7 @@ score4,int,分数4
 }
 ```
 
-#### 6. 查情景剧列表
+#### 6. 查情景剧列表-end
 
 * 情景：用户查情景剧总览列表
 * url：http://localhost:8089/psychology/v1/drama/list
@@ -1071,11 +1069,54 @@ size,int,大小,默认为10
 * 返回参数：
 
 ```
-分页情景剧列表
-还包括这个情景剧所有的章节id ["xxx-xxx-xxx","xxx-xxx-xxx",...,"xxx-xxx-xxx"]
+{
+    "code": 200,
+    "data": {
+        "pageNum": 1,
+        "pageSize": 10,
+        "size": 1,
+        "startRow": 1,
+        "endRow": 1,
+        "total": 1,
+        "pages": 1,
+        "list": [
+            {
+                "id": 13,
+                "name": "name",
+                "introduce": "introduce",
+                "image": "....",
+                "character": "character;asdf;",
+                "lead": "lead",
+                "chapters": [
+                    "00000000-0000-0000-0000-000000000000",
+                    "bc16c89b-0ab5-4c17-a853-7e5b12961a6b",
+                    "f28a3d84-b3fd-49cb-b759-7c8bfc51df6c",
+                    "921e37cd-8794-4467-bcdb-3e4330810c73",
+                    "fd63d10f-7a4e-48a0-96cd-c8ae3090d89b",
+                    "2325f52e-bfc0-49ce-b0ea-ead359592435",
+                    "177825d8-5c13-4aef-87c5-77b8544b5342"
+                ]
+            }
+        ],
+        "prePage": 0,
+        "nextPage": 0,
+        "isFirstPage": true,
+        "isLastPage": true,
+        "hasPreviousPage": false,
+        "hasNextPage": false,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 1,
+        "firstPage": 1,
+        "lastPage": 1
+    }
+}
 ```
 
-#### 7.进入某个情景剧的某一章
+#### 7.进入某个情景剧的某一章-end
 
 * 情景：用户查情景剧总览列表
 * url：http://localhost:8089/psychology/v1/drama/{drama_id}/chapter/{chapter_id}
@@ -1085,8 +1126,25 @@ size,int,大小,默认为10
 * 返回参数：
 
 ```
-某个情景剧第一章节实体内容,
-这个章节所有的["xxx-xxx-xxx","xxx-xxx-xxx",...,"xxx-xxx-xxx"]
+{
+    "code": 200,
+    "data": {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "n",
+        "time": "t",
+        "location": "l",
+        "character": "c;;lead",
+        "show_id": 0,
+        "next": "bc16c89b-0ab5-4c17-a853-7e5b12961a6b",
+        "dialogue": [
+            "00000000-0000-0000-0000-000000000000",
+            "41415d71-c410-4f65-bcb4-2b6677710c26",
+            "f7a7ab42-7120-46b1-a8c9-0e743b903127",
+            "3c03cd16-0ddd-4f7c-bfeb-4909029346ec",
+            "4a6133e5-606d-458f-802e-eae76e1292d9"
+        ]
+    }
+}
 ```
 
 #### 8. 开始某个章节的情景
@@ -1099,18 +1157,44 @@ size,int,大小,默认为10
 * 返回参数：
 
 ```
-某个情景剧某章节，某个对话{主角的，非主角的}
+{
+    "code": 200,
+    "data": {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "character": "c",
+        "content": "contentasdfa",
+        "is_lead": 0,
+        "four_content": 0,
+        "chapter_id": null,
+        "next": "41415d71-c410-4f65-bcb4-2b6677710c26"
+    }
+}
 ```
 
-注意：
+主角对话：
 
 ```
-主角的返回对话，包含了他的待选对话内容以及分数，选择某个对话(确定了某个分数)
+{
+    "code": 200,
+    "data": {
+        "next": "3c03cd16-0ddd-4f7c-bfeb-4909029346ec",
+        "four_content": 6,
+        "score2": 12,
+        "score3": 12,
+        "score4": 12,
+        "is_lead": 1,
+        "content": "NULL",
+        "character": "lead",
+        "content4": "name",
+        "content3": "name",
+        "content2": "name",
+        "content1": "name",
+        "id": "f7a7ab42-7120-46b1-a8c9-0e743b903127",
+        "chapter_id": 6,
+        "score1": 12
+    }
+}
 ```
-
-
-
-
 
 
 

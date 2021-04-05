@@ -5,6 +5,7 @@ import com.cdu.psychology.entity.Dialogue;
 import com.cdu.psychology.entity.Dialogue_score;
 import com.cdu.psychology.entity.Show;
 import com.cdu.psychology.service.DramaService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,12 +52,13 @@ public class DramaController {
         data.put("show_id",show.getId());
         return data;
     }
-    @PutMapping("/chapter")
+        @PutMapping("/chapter")
     public Map<String, Object> putChapter(@RequestParam(name = "name",required = true) String name,
                                           @RequestParam(name = "time",required = true) String time,
-                                          @RequestParam(name = "localtion",required = true) String localtion,
+                                          @RequestParam(name = "location",required = true) String location,
                                           @RequestParam(name = "character",required = true) String character,
-                                          @RequestParam(name = "show_id",required = true) int show_id){
+                                          @RequestParam(name = "show_id",required = true) int show_id,
+                                          @RequestParam(name = "next",required = true) String next){
         Map<String, Object> data = new HashMap<>();
         String lead = dramaService.getShowLead(show_id);
         if(lead == null){
@@ -64,15 +66,20 @@ public class DramaController {
             return data;
         }
         Chapter chapter = new Chapter();
-        String Thisid = UUID.randomUUID().toString();
+
+        if(next.equals(INIT_ID)){
+            chapter.setId(INIT_ID);
+        }else{
+            chapter.setId(next);
+        }
         String nextId = UUID.randomUUID().toString();
-        chapter.setId(Thisid);
+        chapter.setNext(nextId);
+
         chapter.setName(name);
         chapter.setTime(time);
-        chapter.setLocation(localtion);
-        chapter.setCharacter(character+";"+lead);
+        chapter.setLocation(location);
+        chapter.setCharacter(character+lead+";");
         chapter.setShow_id(show_id);
-        chapter.setNext(nextId);
         if(dramaService.putChapter(chapter)==0){
             data.put("code",413);
             return data;
@@ -100,8 +107,6 @@ public class DramaController {
                                            @RequestParam(name = "character",required = true) String character,
                                            @RequestParam(name = "content",required = false) String content,
                                            @RequestParam(name = "chapter_id",required = true) String chapter_id,
-                                           @RequestParam(name = "is_lead",required = true) int is_lead,
-                                           @RequestParam(name = "next",required = true) String next,
                                            @RequestParam(name = "content1",required = false) String content1,
                                            @RequestParam(name = "content2",required = false) String content2,
                                            @RequestParam(name = "content3",required = false) String content3,
@@ -111,42 +116,165 @@ public class DramaController {
                                            @RequestParam(name = "score3",required = false) int score3,
                                            @RequestParam(name = "score4",required = false) int score4){
         Map<String, Object> data = new HashMap<>();
-        String Gen_next = UUID.randomUUID().toString();
-        Dialogue dialogue = new Dialogue();
-        //串接数据
-        if(id.equals(INIT_ID)){
-            dialogue.setId(INIT_ID);
-        } else {
-            dialogue.setId(next);
-        }
-        dialogue.setNext(Gen_next);
+        boolean star = dramaService.getChapterLead(chapter_id).equals(character);
+        boolean init = id.equals(INIT_ID);
+        if(init){
+            //初始化第一个对话
+            if(star){
+                //第一个是主角
+                Dialogue dialogue = new Dialogue();
+                dialogue.setId(INIT_ID);
+                dialogue.setCharacter(character);
+                dialogue.setContent("NULL");
+                dialogue.setIs_lead(1);
+                dialogue.setChapter_id(chapter_id);
+                String Gen_next = UUID.randomUUID().toString();
+                dialogue.setNext(Gen_next);
 
-        dialogue.setChapter_id(chapter_id);
-        dialogue.setCharacter(character);
+                Dialogue_score ds = new Dialogue_score();
+                ds.setContent1(content1);
+                ds.setContent2(content2);
+                ds.setContent3(content3);
+                ds.setContent4(content4);
+                ds.setScore1(score1);
+                ds.setScore2(score2);
+                ds.setScore3(score3);
+                ds.setScore4(score4);
+                ds.setChapter_id(chapter_id);
+                if(dramaService.putDialogue_score(ds)==0){
+                    data.put("code",413);
+                    return data;
+                }
+                dialogue.setFour_content(ds.getId());
+                if(dramaService.putDialogue(dialogue)==0){
+                    data.put("code",413);
+                    return data;
+                }
+                data.put("code",200);
+                data.put("next",Gen_next);
+                return data;
+            }else {
+                //第一个不是主角
+                Dialogue dialogue = new Dialogue();
+                dialogue.setId(INIT_ID);
+                dialogue.setCharacter(character);
+                dialogue.setContent(content);
+                dialogue.setIs_lead(0);
+                dialogue.setChapter_id(chapter_id);
+                String Gen_next = UUID.randomUUID().toString();
+                dialogue.setNext(Gen_next);
+                if(dramaService.putDialogue(dialogue)==0){
+                    data.put("code",413);
+                    return data;
+                }
+                data.put("code",200);
+                data.put("next",Gen_next);
+                return data;
+            }
+        }else{
+            //不是第一个对话
+            if(star){
+                //是主角
+                Dialogue dialogue = new Dialogue();
+                dialogue.setId(id);
+                dialogue.setCharacter(character);
+                dialogue.setContent("NULL");
+                dialogue.setIs_lead(1);
+                dialogue.setChapter_id(chapter_id);
+                String Gen_next = UUID.randomUUID().toString();
+                dialogue.setNext(Gen_next);
 
-        //处理对话 主角对话
-        if(dramaService.getChapterLead(chapter_id).equals(character)){
-            dialogue.setIs_lead(1);
-            Dialogue_score ds = new Dialogue_score();
-            ds.setId(next);
-            ds.setContent1(content1);
-            ds.setContent2(content2);
-            ds.setContent3(content3);
-            ds.setContent4(content4);
-            ds.setScore1(score1);
-            ds.setScore2(score2);
-            ds.setScore3(score3);
-            ds.setScore4(score4);
-            ds.setChapter_id(chapter_id);
-            ds.setNext(Gen_next);
-            if(dramaService.putDialogue_score(ds)==0){
-                data.put("code",413);
+                Dialogue_score ds = new Dialogue_score();
+                ds.setContent1(content1);
+                ds.setContent2(content2);
+                ds.setContent3(content3);
+                ds.setContent4(content4);
+                ds.setScore1(score1);
+                ds.setScore2(score2);
+                ds.setScore3(score3);
+                ds.setScore4(score4);
+                ds.setChapter_id(chapter_id);
+                if(dramaService.putDialogue_score(ds)==0){
+                    data.put("code",413);
+                    return data;
+                }
+                dialogue.setFour_content(ds.getId());
+                if(dramaService.putDialogue(dialogue)==0){
+                    data.put("code",413);
+                    return data;
+                }
+                data.put("code",200);
+                data.put("next",Gen_next);
+                return data;
+            }else {
+                //也不是主角
+                Dialogue dialogue = new Dialogue();
+                dialogue.setId(id);
+                dialogue.setCharacter(character);
+                dialogue.setContent(content);
+                dialogue.setIs_lead(0);
+                dialogue.setChapter_id(chapter_id);
+                String Gen_next = UUID.randomUUID().toString();
+                dialogue.setNext(Gen_next);
+                if(dramaService.putDialogue(dialogue)==0){
+                    data.put("code",413);
+                    return data;
+                }
+                data.put("code",200);
+                data.put("next",Gen_next);
                 return data;
             }
         }
-        dialogue.setContent(content);
+    }
 
+    @GetMapping("/list")
+    public Map<String, Object> getShowList(@RequestParam(name = "page",required = false,defaultValue = "1") int page,
+                                           @RequestParam(name = "size",required = false,defaultValue = "10") int size){
+        Map<String, Object> data = new HashMap<>();
+        PageInfo<Show>  showPageInfo = dramaService.findAllShowByPageS(page,size);
         data.put("code",200);
+        data.put("data",showPageInfo);
         return data;
+    }
+
+    @GetMapping("/{drama_id}/chapter/{chapter_id}")
+    public Map<String, Object> getChapter(@PathVariable(name = "drama_id", required = true)String drama_id,
+                                          @PathVariable(name = "chapter_id", required = true)String chapter_id){
+        Map<String, Object> data = new HashMap<>();
+        Chapter chapter = dramaService.getChapter(drama_id, chapter_id);
+        data.put("code",200);
+        data.put("data",chapter);
+        return data;
+    }
+    @GetMapping("/{drama_id}/chapter/{chapter_id}/{dialogue_id}")
+    public Map<String, Object> getDialogue(@PathVariable(name = "dialogue_id", required = true)String dialogue_id){
+        Map<String, Object> data = new HashMap<>();
+        Dialogue dialogue = dramaService.getDialogueInChapter(dialogue_id);
+        if(dialogue.getIs_lead()==0){
+            data.put("code",200);
+            data.put("data",dialogue);
+            return data;
+        }else {
+            Map<String, Object> con = new HashMap<>();
+            Dialogue_score ds = dramaService.getDialogue_socreInChapter(dialogue.getFour_content());
+            con.put("id",dialogue.getId());
+            con.put("character",dialogue.getCharacter());
+            con.put("content",dialogue.getContent());
+            con.put("is_lead",dialogue.getIs_lead());
+            con.put("four_content",dialogue.getFour_content());
+            con.put("chapter_id",dialogue.getFour_content());
+            con.put("next",dialogue.getNext());
+            con.put("content1",ds.getContent1());
+            con.put("content2",ds.getContent2());
+            con.put("content3",ds.getContent3());
+            con.put("content4",ds.getContent4());
+            con.put("score1",ds.getScore1());
+            con.put("score2",ds.getScore2());
+            con.put("score3",ds.getScore3());
+            con.put("score4",ds.getScore4());
+            data.put("code",200);
+            data.put("data",con);
+            return data;
+        }
     }
 }

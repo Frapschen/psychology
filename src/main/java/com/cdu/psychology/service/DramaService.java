@@ -1,8 +1,7 @@
 package com.cdu.psychology.service;
 
-import com.cdu.psychology.entity.Chapter;
-import com.cdu.psychology.entity.Dialogue_score;
-import com.cdu.psychology.entity.Show;
+import com.cdu.psychology.entity.*;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -13,5 +12,9 @@ public interface DramaService {
     String[] getCharacterInChpater(String id);
     String getChapterLead(String id);
     int putDialogue_score(Dialogue_score ds);
-
+    int putDialogue(Dialogue dialogue);
+    PageInfo<Show> findAllShowByPageS(int pageNum, int pageSize);
+    Chapter getChapter(String show_id,String chapter_id);
+    Dialogue getDialogueInChapter(String dialogue_id);
+    Dialogue_score getDialogue_socreInChapter(int dialogue_score_id);
 }
