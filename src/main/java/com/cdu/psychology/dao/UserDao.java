@@ -2,6 +2,7 @@ package com.cdu.psychology.dao;
 
 import com.cdu.psychology.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,6 +10,14 @@ import java.util.List;
 @Repository
 public interface  UserDao {
 
+    @Select("select * from user")
     List<User> getUser();
+    @Select("select * from user where role=#{role}")
+    List<User> getUserByRole(int role);
+    @Select("select * from user where id=#{id}")
+    User getUserById(int id);
     List<User> getUserCount();
+    User getUserByLogin(String u, String p);
+    int register(User u);
+    int delete(int id);
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdu.psychology.dao.DramaDao">
+    <resultMap id="Dialogue" type="com.cdu.psychology.entity.Dialogue">
+        <id column="id" property="id"></id>
+        <result column="character" property="character"/>
+        <result column="content" property="content"/>
+        <result column="is_lead" property="is_lead"/>
+        <result column="four_content" property="four_content"/>
+        <result column="chapter_id" property="chapter_id"/>
+        <result column="next" property="next"/>
+    </resultMap>
+    <resultMap id="Dialogue_score" type="com.cdu.psychology.entity.Dialogue_score">
+        <id column="id" property="id"></id>
+        <result column="content1" property="content1"/>
+        <result column="score1" property="score1"/>
+        <result column="content2" property="content2"/>
+        <result column="score2" property="score2"/>
+        <result column="content3" property="content3"/>
+        <result column="score3" property="score3"/>
+        <result column="content4" property="content4"/>
+        <result column="score4" property="score4"/>
+        <result column="chapter_id" property="chapter_id"/>
+    </resultMap>
+
+    <select id="getDialogueById" parameterType="java.lang.String" resultMap="Dialogue">
+        select id,dialogue.character,content,is_lead,four_content,chapter_id,next from dialogue where id = #{id}
+    </select>
+
+    <select id="getDialogue_scoreInChapter" parameterType="java.lang.Integer" resultMap="Dialogue_score">
+        select id,content1,score1,content2,score2,content3,score3,content4,score4,chapter_id from dialogue_score where id = #{id}
+    </select>
+
+</mapper>

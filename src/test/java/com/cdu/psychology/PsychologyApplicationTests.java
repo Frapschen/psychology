@@ -1,6 +1,7 @@
 package com.cdu.psychology;
 import com.cdu.psychology.controller.ArticleControllerTest;
 import com.cdu.psychology.controller.CommentControllerTest;
+import com.cdu.psychology.utils.TimeUtilTest;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,5 +18,9 @@ class PsychologyApplicationTests {
     void articleControllerTest(){
         new ArticleControllerTest().testAll();
         new CommentControllerTest().testAll();
+    }
+    @Test
+    void timeUilsTest(){
+        new TimeUtilTest().getTime();
     }
 }

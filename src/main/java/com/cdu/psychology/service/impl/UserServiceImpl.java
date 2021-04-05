@@ -1,8 +1,12 @@
 package com.cdu.psychology.service.impl;
 
 import com.cdu.psychology.dao.UserDao;
+import com.cdu.psychology.entity.Code;
 import com.cdu.psychology.entity.User;
+import com.cdu.psychology.service.CommonService;
 import com.cdu.psychology.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,10 +15,44 @@ import java.util.List;
 public class UserServiceImpl  implements UserService {
     @Autowired
     private UserDao userDao;
-
     @Override
     public int pingUser() {
         List<User> u =userDao.getUserCount();
         return u.size();
+    }
+
+    @Override
+    public User login(String u, String p) {
+        return  userDao.getUserByLogin(u,p);
+    }
+
+    @Override
+    public int register(User u) {
+        return userDao.register(u);
+    }
+
+    @Override
+    public int delete(int id) {
+        return userDao.delete(id);
+    }
+    @Override
+    public PageInfo<User> findAllUserByPageS(int pageNum, int pageSize) {
+        // TODO Auto-generated method stub
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> lists = userDao.getUser();
+        PageInfo<User> pageInfo = new PageInfo<User>(lists);
+        return pageInfo;
+    }
+
+    @Override
+    public int checkRole(int user_id, int role) {
+        User u = userDao.getUserById(user_id);
+        if(u==null){
+            return 0;
+        }
+        if(role != u.role){
+            return 0;
+        }
+        return 1;
     }
 }

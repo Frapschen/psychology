@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdu.psychology.dao.UserDao">
+    <select id="getUserCount" resultType="com.cdu.psychology.entity.User">
+        select * from user
+    </select>
+    <select id="getUserByLogin" parameterType="java.lang.String" resultType="com.cdu.psychology.entity.User">
+        select * from user where username = #{u} and password=#{p}
+    </select>
+    <insert id="register" parameterType="com.cdu.psychology.entity.User">
+        insert into user (name,username,password,phone,introduce,image,role) values
+        (#{name},#{username},#{password},#{phone},#{introduce},#{image},#{role})
+    </insert>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from user where id=#{id}
+    </delete>
+</mapper>
