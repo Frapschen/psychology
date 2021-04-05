@@ -952,7 +952,7 @@ chapter_id,int,外键
 
 ### api接口
 
-#### 1. 添加一个情景剧(show)-end
+#### 1. 添加一个情景剧-end
 
 * 情景：管理员或老师添加情景剧的总览信息
 * url：http://localhost:8089/psychology/v1/drama/show
@@ -978,7 +978,7 @@ next,varchar,下一个章节
 }
 ```
 
-#### 2. 添加一个章节(chapter)
+#### 2. 添加一个章节-end
 
 * 情景：管理员或老师在某个情景剧下添加章节的总览信息
 * url：http://localhost:8089/psychology/v1/drama/chapter
@@ -989,7 +989,7 @@ next,varchar,下一个章节
 ```
 name,varchar,名字
 time,varchar,时间
-localtion，varchar,地点
+location，varchar,地点
 character,varchar,名字 [赵波;张宁;张宁室友;赵波老乡 | show表中的lead]
 show_id,int,外键
 next,varchar,下一条章节【0，代表起始对话】{XXX-XXX-XXX,XXXXXXXXX}
@@ -1000,11 +1000,11 @@ next,varchar,下一条章节【0，代表起始对话】{XXX-XXX-XXX,XXXXXXXXX}
 ```
 {
 	"code":200,
-	"chapter_id":1
+	"next_id":1
 }
 ```
 
-#### 4. 获取某个章节的角色
+#### 4. 获取某个章节的角色-end
 
 * 情景：管理员或老师在获取某个章节中的所有角色
 * url：http://localhost:8089/psychology/v1/drama/chapter/{chapter_id}/character
@@ -1016,7 +1016,7 @@ next,varchar,下一条章节【0，代表起始对话】{XXX-XXX-XXX,XXXXXXXXX}
 ```
 {
 	"code":200,
-	"roles":["aaa","bbb","star"]
+	"characters":["aaa","bbb","star"]
 }
 ```
 
@@ -1029,12 +1029,21 @@ next,varchar,下一条章节【0，代表起始对话】{XXX-XXX-XXX,XXXXXXXXX}
 * 请求参数
 
 ```
-id,varchar,对话id,第一条：(000-000-000 | 000000000 ) 以后的的：[xxx-xxx-xxx]，最后一条(111-111-111)
+id,varchar,对话id,第一条：(初始： 00000000-0000-0000-0000-000000000000 ) 以后的的：[xxx-xxx-xxx]
 character,varchar,角色  if(star) ... else ...
 content,varchar,内容 //content1 content2 content3 content4 | score1 score2 score4 score4
 chapter_id,int,外键
 is_lead,int,1 是 0不是
 next,varchar,下一条对话
+
+content1,varchar,内容1
+score1,int,分数1
+content2,varchar,内容2
+score2,int,分数2
+content3,varchar,内容3
+score3,int,分数3
+content4,varchar,内容4
+score4,int,分数4
 ```
 
 * 返回参数：
@@ -1129,6 +1138,6 @@ curl --include \
      --header "Origin: http://localhost:8089" \
      --header "Sec-WebSocket-Key: SGVsbG8sIHdvcmxkIQ==" \
      --header "Sec-WebSocket-Version: 13" \
-     http://localhost:8089/psychology/v1/chat/1/room/1
+     http://localhost:8089/psychology/v1/chat/2c2c531994ed49b3b004bee7606562a3/room/1
 ```
 
