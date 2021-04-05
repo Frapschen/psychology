@@ -29,6 +29,7 @@ public interface DramaDao {
 
     @Insert("insert into dialogue_score (id,content1,score1,content2,score2,content3,score3,content4,score4,chapter_id) " +
             "values (#{id},#{content1},#{score1},#{content2},#{score2},#{content3},#{score3},#{content4},#{score4},#{chapter_id})")
+    @Options(keyProperty = "id")
     int putDialogue_score(Dialogue_score ds);
 
 }

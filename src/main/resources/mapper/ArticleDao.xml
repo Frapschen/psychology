@@ -18,21 +18,6 @@
             <association property="user" resultMap="userInComment"/>
         </collection>
     </resultMap>
-    <select id="getArticle" resultMap="articleToComments">
-        select article.id,
-        article.title,
-        article.introduce,
-        article.content,
-        article.created_time,
-        c_id,
-        c_content,
-        u_id,
-        u_name,
-        u_image from article join
-        (select comment.id c_id,content c_content,user_id u_id,article_id,name u_name,image u_image from comment join user on comment.user_id=user.id) b on
-         article.id=b.article_id
-    </select>
-
     <select id="getArticleById" parameterType="java.lang.Integer" resultMap="articleToComments">
         select article.id,
         article.title,

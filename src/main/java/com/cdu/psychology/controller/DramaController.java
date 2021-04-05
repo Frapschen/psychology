@@ -111,37 +111,40 @@ public class DramaController {
                                            @RequestParam(name = "score3",required = false) int score3,
                                            @RequestParam(name = "score4",required = false) int score4){
         Map<String, Object> data = new HashMap<>();
-//        String Gen_next = UUID.randomUUID().toString();
-//        Dialogue dialogue = new Dialogue();
-//        //串接数据
-//        if(id.equals(INIT_ID)){
-//            dialogue.setId(INIT_ID);
-//        } else {
-//            dialogue.setId(next);
-//        }
-//        dialogue.setNext(Gen_next);
-//
-//        dialogue.setChapter_id(chapter_id);
-//        dialogue.setCharacter(character);
-//
-//        //处理对话 主角对话
-//        if(dramaService.getChapterLead(chapter_id).equals(character)){
-//            dialogue.setIs_lead(1);
-//            Dialogue_score ds = new Dialogue_score();
-//            ds.setId(next);
-//            ds.setContent1(content1);
-//            ds.setContent2(content2);
-//            ds.setContent3(content3);
-//            ds.setContent4(content4);
-//            ds.setScore1(score1);
-//            ds.setScore2(score2);
-//            ds.setScore3(score3);
-//            ds.setScore4(score4);
-//            ds.setChapter_id(chapter_id);
-//            ds.setNext(Gen_next);
-//
-//        }
-//        dialogue.setContent(content);
+        String Gen_next = UUID.randomUUID().toString();
+        Dialogue dialogue = new Dialogue();
+        //串接数据
+        if(id.equals(INIT_ID)){
+            dialogue.setId(INIT_ID);
+        } else {
+            dialogue.setId(next);
+        }
+        dialogue.setNext(Gen_next);
+
+        dialogue.setChapter_id(chapter_id);
+        dialogue.setCharacter(character);
+
+        //处理对话 主角对话
+        if(dramaService.getChapterLead(chapter_id).equals(character)){
+            dialogue.setIs_lead(1);
+            Dialogue_score ds = new Dialogue_score();
+            ds.setId(next);
+            ds.setContent1(content1);
+            ds.setContent2(content2);
+            ds.setContent3(content3);
+            ds.setContent4(content4);
+            ds.setScore1(score1);
+            ds.setScore2(score2);
+            ds.setScore3(score3);
+            ds.setScore4(score4);
+            ds.setChapter_id(chapter_id);
+            ds.setNext(Gen_next);
+            if(dramaService.putDialogue_score(ds)==0){
+                data.put("code",413);
+                return data;
+            }
+        }
+        dialogue.setContent(content);
 
         data.put("code",200);
         return data;
